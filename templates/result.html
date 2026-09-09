@@ -1,31 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Result</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Loan Application | LumenLend</title>
+<meta name="description" content="Apply for a personal loan in minutes. Secure, encrypted, and clear terms." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#eef1fb; --card:#ffffff; --fg:#171a2b; --muted:#6b7191;
+    --primary:#4f46e5; --primary-2:#22d3ee; --gold:#f6c453; --border:#e3e6f4;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Manrope,system-ui,sans-serif; color:var(--fg);
+    background:
+      radial-gradient(60rem 40rem at 10% -10%, #dbe4ff 0%, transparent 60%),
+      radial-gradient(50rem 35rem at 110% 10%, #d6fbff 0%, transparent 60%),
+      var(--bg);
+    min-height:100vh; padding:32px 20px;
+  }
+  .wrap{max-width:1100px;margin:0 auto}
+  .display{font-family:Fredoka,Manrope,sans-serif}
+  .gloss{
+    background:linear-gradient(135deg,#6366f1 0%,#4f46e5 45%,#22d3ee 100%);
+    color:#fff;
+  }
+  .chip{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.6)}
+  header.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:24px;font-weight:700;box-shadow:0 10px 24px rgba(79,70,229,.3)}
+  .brand h4{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .brand p{margin:4px 0 0;font-size:12px;font-weight:600;color:var(--muted)}
+  .steps{display:flex;align-items:center;gap:8px}
+  .steps .pill{border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700}
+  .bar{height:8px;width:32px;border-radius:999px;background:rgba(79,70,229,.2)}
+  .bar.on{background:var(--primary)}
+  .grid{display:grid;grid-template-columns:.9fr 1.4fr;gap:24px;align-items:start}
+  aside .panel{border-radius:24px;padding:28px;box-shadow:0 20px 45px rgba(79,70,229,.3)}
+  aside h1{font-size:36px;line-height:1.05;letter-spacing:-.03em;margin:12px 0 0}
+  aside .kicker{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;opacity:.85;margin:0}
+  aside .lede{font-size:14px;line-height:1.6;opacity:.9;margin-top:16px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+  .stats div{border-radius:16px;padding:12px 16px;color:var(--fg)}
+  .stats strong{display:block;font-size:20px;font-weight:800}
+  .stats span{font-size:11px;font-weight:600;color:var(--muted)}
+  .progress{margin-top:24px;border-top:1px solid rgba(255,255,255,.25);padding-top:20px}
+  .progress .row{display:flex;justify-content:space-between;font-size:12px;font-weight:600;opacity:.85;margin-bottom:8px}
+  .track{height:12px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden}
+  .track i{display:block;height:100%;width:62%;border-radius:999px;background:linear-gradient(90deg,var(--gold),#fff)}
+  .note{font-size:11px;opacity:.75;margin-top:12px}
+  .secure{margin-top:16px;border-radius:16px;padding:12px 16px;display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600}
+  section.card{background:var(--card);border-radius:24px;padding:24px;box-shadow:0 18px 40px rgba(79,70,229,.10);border:1px solid rgba(0,0,0,.05);margin-bottom:20px}
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .num{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:14px;font-weight:700}
+  .head h2{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  label{display:block}
+  label.full{grid-column:1 / -1}
+  label span.lab{display:block;margin-bottom:6px;font-size:12px;font-weight:700;color:var(--muted)}
+  label span.req{color:var(--gold)}
+  input,select{
+    width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--border);
+    background:#f8f9ff;font:inherit;font-size:14px;color:var(--fg);outline:none;transition:.15s;
+  }
+  input:focus,select:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.12)}
+  .actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap-reverse}
+  button{font:inherit;font-weight:700;font-size:14px;cursor:pointer;border:none}
+  .btn-reset{border-radius:16px;border:1px solid var(--border);background:#fff;color:var(--muted);padding:14px 24px}
+  .btn-submit{border-radius:16px;padding:14px 32px;box-shadow:0 12px 26px rgba(79,70,229,.3)}
+  .btn-submit:hover{filter:brightness(1.06)}
+  .terms{text-align:center;font-size:11px;font-weight:500;color:var(--muted);margin-top:14px}
+  .success{max-width:420px;margin:8vh auto;background:#fff;border-radius:24px;padding:32px;text-align:center;box-shadow:0 20px 45px rgba(79,70,229,.15)}
+  .success .tick{width:64px;height:64px;margin:0 auto;border-radius:18px;display:grid;place-items:center;font-size:26px}
+  .hidden{display:none}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+  @media (max-width:560px){ .fields{grid-template-columns:1fr} aside h1{font-size:30px} }
+</style>
 </head>
-
 <body>
+<div class="wrap">
+  <div id="app">
+    <header class="top">
+      <div class="brand">
+        <div class="logo gloss display">L</div>
+        <div>
+          <h4 class="display">LumenLend</h4>
+          <p>Loan application</p>
+        </div>
+      </div>
+      <div class="steps">
+        <span class="pill chip">Step 1 of 1</span>
+        <span class="bar on"></span><span class="bar"></span><span class="bar"></span>
+      </div>
+    </header>
 
-    <div class="container mt-5">
-        <h1 class="mb-4">Loan Approval Prediction Result</h1>
-        
-        <div class="card">
-            
-            <div class="card-body">
-                <h5 class="card-title">Prediction Result</h5>
-                <p class="card-text">The loan approval prediction result is: <strong>{{ prediction }}</strong></p>
+    <div class="grid">
+      <aside>
+        <div class="panel gloss">
+          <p class="kicker">Personal loan</p>
+          <h1 class="display">Borrow with a little more shine.</h1>
+          <p class="lede">Fill in your details and we'll build your offer in seconds. No hidden fees, just clear numbers you can actually trust.</p>
+          <div class="stats">
+            <div class="chip"><strong>4.2%</strong><span>From APR</span></div>
+            <div class="chip"><strong>~2 min</strong><span>To complete</span></div>
+          </div>
+          <div class="progress">
+            <div class="row"><span>Quick review</span><span>Fast approval</span></div>
+            <div class="track"><i></i></div>
+            <p class="note">Estimates are indicative and subject to final verification.</p>
+          </div>
+        </div>
+        <div class="secure chip">🔒 Your details are encrypted and never sold. Ever.</div>
+      </aside>
+
+      <main>
+        <form id="loanForm">
+          <section class="card">
+            <div class="head"><span class="num gloss">1</span><h2 class="display">Applicant details</h2></div>
+            <div class="fields">
+              <label><span class="lab">Full name <span class="req">*</span></span>
+                <input name="applicantName" type="text" required placeholder="Mohamed Khalid Mahmoud" /></label>
+              <label><span class="lab">Phone number <span class="req">*</span></span>
+                <input name="phone" type="tel" required placeholder="(+20) 112-170-9192" /></label>
+              <label class="full"><span class="lab">Email address <span class="req">*</span></span>
+                <input name="email" type="email" required placeholder="example@example.com" /></label>
+              <label><span class="lab">Gender <span class="req">*</span></span>
+                <select name="gender" required><option value="">Please select</option><option>Male</option><option>Female</option></select></label>
+              <label><span class="lab">Marital status <span class="req">*</span></span>
+                <select name="married" required><option value="">Please select</option><option value="Yes">Yes (Married)</option><option value="No">No (Single)</option></select></label>
+              <label class="full"><span class="lab">Education <span class="req">*</span></span>
+                <select name="education" required><option value="">Please select</option><option>Graduate</option><option>Not Graduate</option></select></label>
             </div>
-            
-        </div>
-        
-        <div class="mt-4">
-            <a href="/" class="btn btn-primary">Back to Home</a>
-        </div>
-    
+          </section>
+
+          <section class="card">
+            <div class="head"><span class="num gloss">2</span><h2 class="display">Financial profile</h2></div>
+            <div class="fields">
+              <label><span class="lab">Applicant income (monthly) <span class="req">*</span></span>
+                <input name="applicantIncome" type="number" min="0" required placeholder="8500" /></label>
+              <label><span class="lab">Co-applicant income (monthly)</span>
+                <input name="coapplicantIncome" type="number" min="0" placeholder="3200" /></label>
+              <label><span class="lab">Self employed? <span class="req">*</span></span>
+                <select name="selfEmployed" required><option value="">Please select</option><option>Yes</option><option>No</option></select></label>
+              <label><span class="lab">Credit history <span class="req">*</span></span>
+                <select name="creditHistory" required><option value="">Please select</option><option>Yes</option><option>No</option></select></label>
+              <label class="full"><span class="lab">Dependents <span class="req">*</span></span>
+                <select name="dependents" required><option value="">Please select</option><option>0</option><option>1</option><option>2</option><option>3+</option></select></label>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="head"><span class="num gloss">3</span><h2 class="display">Loan &amp; property</h2></div>
+            <div class="fields">
+              <label><span class="lab">Loan amount (in thousands) <span class="req">*</span></span>
+                <input name="loanAmount" type="number" min="1" required placeholder="250" /></label>
+              <label><span class="lab">Loan amount term (months) <span class="req">*</span></span>
+                <input name="loanTerm" type="number" min="1" required placeholder="360" /></label>
+              <label class="full"><span class="lab">Property area <span class="req">*</span></span>
+                <select name="propertyArea" required><option value="">Please select</option><option>Rural</option><option>Semiurban</option><option>Urban</option></select></label>
+            </div>
+          </section>
+
+          <div class="actions">
+            <button type="reset" class="btn-reset">Reset</button>
+            <button type="submit" class="btn-submit gloss">Submit application →</button>
+          </div>
+          <p class="terms">By submitting you agree to LumenLend's terms &amp; fair-credit policy.</p>
+        </form>
+      </main>
     </div>
+  </div>
+
+  <div id="done" class="hidden">
+    <div class="success">
+      <div class="tick gloss">✓</div>
+      <h1 class="display" style="margin-top:20px;font-size:24px;letter-spacing:-.02em">Application received</h1>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6">Thank you for applying. Our team will review your details and reach out within one business day.</p>
+      <button class="btn-submit gloss" style="width:100%;margin-top:20px" onclick="restart()">Start a new application</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('loanForm');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    console.log('Loan application:', data);
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('done').classList.remove('hidden');
+  });
+  function restart() {
+    form.reset();
+    document.getElementById('done').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+  }
+</script>
 </body>
 </html>
