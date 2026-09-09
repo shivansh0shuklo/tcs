@@ -76,11 +76,6 @@ The machine learning model used in this project is a [type of model, e.g., Logis
 
 Contributions are welcome! Please fork this repository and submit a pull request with your proposed changes.
 
-## Contact
 
-Name: Mohamed Khaled Mahmoud Sayed  
-E-mail: Mo7ammad244@gmail.com
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
